@@ -1,5 +1,6 @@
 package com.ffpalu.concessionaria.controller;
 
+import com.ffpalu.concessionaria.controller.interfaces.AuthController;
 import com.ffpalu.concessionaria.dto.request.LoginRequest;
 import com.ffpalu.concessionaria.dto.response.AuthResponse;
 import com.ffpalu.concessionaria.middleware.AuthMiddleware;
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthControllerImpl implements AuthController {
 
 	private final AuthMiddleware authMiddleware;
 
