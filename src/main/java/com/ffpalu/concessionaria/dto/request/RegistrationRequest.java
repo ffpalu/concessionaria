@@ -18,15 +18,12 @@ public class RegistrationRequest {
 	private String lastName;
 
 	@Email(message = "Insert a valid mail")
+	@NotBlank
 	private String email;
 
 	@NotBlank
-	@Size(min = 3, message = "username must be t least 3 characters long")
-	private String username;
-
-	@NotBlank
-	@Size(min = 3, message = "password must be at least 3 characters long")
-	private String password;
+	@Size(min = 16, max = 16, message = "fiscal code must be 16 character")
+	private String cf;
 
 	@NotNull
 	private Role role;

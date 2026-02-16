@@ -1,14 +1,22 @@
 package com.ffpalu.concessionaria.middleware;
 
-import com.ffpalu.concessionaria.dto.request.LoginRequest;
+import com.ffpalu.concessionaria.dto.request.CredentialRequest;
+import com.ffpalu.concessionaria.dto.request.RegistrationRequest;
+import com.ffpalu.concessionaria.dto.request.RegistrationSellerDetailsRequest;
+import com.ffpalu.concessionaria.dto.request.RegistrationWrapperRequest;
 import com.ffpalu.concessionaria.dto.response.AuthResponse;
 import com.ffpalu.concessionaria.entity.Credential;
+import com.ffpalu.concessionaria.entity.Seller;
 import com.ffpalu.concessionaria.entity.User;
+import com.ffpalu.concessionaria.entity.enums.Role;
 import com.ffpalu.concessionaria.exceptions.BadCredential;
+import com.ffpalu.concessionaria.exceptions.UserException;
 import com.ffpalu.concessionaria.security.JwtService;
 import com.ffpalu.concessionaria.service.CredentialServiceImpl;
 import com.ffpalu.concessionaria.service.UserServiceImpl;
+import com.ffpalu.concessionaria.service.interfaces.SellerService;
 import com.ffpalu.concessionaria.utils.Mapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,10 +29,12 @@ public class AuthMiddleware {
 
 	private final CredentialServiceImpl credentialService;
 	private final UserServiceImpl userService;
+	private final SellerService sellerService;
 	private final AuthenticationManager authenticationManager;
 	private final JwtService jwtService;
+	private final Mapper mapper;
 
-	public AuthResponse login(LoginRequest credentialLogin) {
+	public AuthResponse login(CredentialRequest credentialLogin) {
 
 		Authentication authentication =  authenticationManager.authenticate(
 						new UsernamePasswordAuthenticationToken(credentialLogin.getUsername(), credentialLogin.getPassword())
@@ -39,11 +49,35 @@ public class AuthMiddleware {
 						.orElseThrow(() -> new BadCredential("User not found"));
 
 
-		return Mapper.mapToLoginResponse(token, user);
+		return mapper.mapToLoginResponse(token, user);
 
 
 	}
 
+	@Transactional
+	public void registerUser(RegistrationWrapperRequest request) {
+		RegistrationRequest userDetails = request.getUser();
+		CredentialRequest credentialRequest = request.getCredential();
+
+		RegistrationSellerDetailsRequest sellerDetails = request.getDetails();
+
+		if (userService.checkIfUserExists(userDetails.getCf(), userDetails.getEmail())) {
+			throw new UserException("User already exists");
+		}
+
+		if (credentialService.checkIfCredentialExists(credentialRequest.getUsername())) {
+			throw new BadCredential("Username already exists");
+		}
+
+		User userCreated = userService.createUser(userDetails);
+
+		Credential credential = credentialService.createCredential(credentialRequest, userCreated);
+
+		if (credentialRequest.getRole() == Role.SELLER) {
+			Seller seller = sellerService.createSeller(sellerDetails, userCreated);
+		}
+
+	}
 
 
 
