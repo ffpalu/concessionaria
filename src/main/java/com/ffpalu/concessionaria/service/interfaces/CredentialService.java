@@ -14,4 +14,7 @@ public interface CredentialService {
 	boolean checkIfCredentialExists(String username);
 
 	Credential createCredential(CredentialRequest request, User user);
+
+	Credential changePassword(String username, String newPassword);
+
 }

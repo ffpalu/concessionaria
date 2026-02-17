@@ -24,6 +24,7 @@ public class Mapper {
 						.email(user.getEmail())
 						.firstName(user.getFirstName())
 						.lastName(user.getLastName())
+						.CF(user.getCF())
 						.build();
 	}
 
@@ -31,7 +32,7 @@ public class Mapper {
 		return User.builder()
 				.firstName(request.getFirstName())
 				.lastName(request.getLastName())
-				.CF(request.getCf())
+				.CF(request.getCF())
 				.email(request.getEmail())
 				.build();
 	}

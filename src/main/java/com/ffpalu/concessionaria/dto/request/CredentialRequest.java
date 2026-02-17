@@ -12,7 +12,7 @@ public class CredentialRequest {
 
 
 	@NotBlank(message = "usernameRequired")
-	@Size(min = 3, message = "username must be t least 3 characters long")
+	@Size(min = 3, message = "username must be at least 3 characters long")
 	private String username;
 
 	@NotBlank(message = "password required")

@@ -11,6 +11,7 @@ import com.ffpalu.concessionaria.entity.User;
 import com.ffpalu.concessionaria.entity.enums.Role;
 import com.ffpalu.concessionaria.exceptions.BadCredential;
 import com.ffpalu.concessionaria.exceptions.UserException;
+import com.ffpalu.concessionaria.middleware.interfaces.AuthMiddleware;
 import com.ffpalu.concessionaria.security.JwtService;
 import com.ffpalu.concessionaria.service.CredentialServiceImpl;
 import com.ffpalu.concessionaria.service.UserServiceImpl;
@@ -25,7 +26,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthMiddleware {
+public class AuthMiddlewareImpl  implements AuthMiddleware {
 
 	private final CredentialServiceImpl credentialService;
 	private final UserServiceImpl userService;
@@ -34,6 +35,7 @@ public class AuthMiddleware {
 	private final JwtService jwtService;
 	private final Mapper mapper;
 
+	@Override
 	public AuthResponse login(CredentialRequest credentialLogin) {
 
 		Authentication authentication =  authenticationManager.authenticate(
@@ -55,13 +57,14 @@ public class AuthMiddleware {
 	}
 
 	@Transactional
+	@Override
 	public void registerUser(RegistrationWrapperRequest request) {
 		RegistrationRequest userDetails = request.getUser();
 		CredentialRequest credentialRequest = request.getCredential();
 
 		RegistrationSellerDetailsRequest sellerDetails = request.getDetails();
 
-		if (userService.checkIfUserExists(userDetails.getCf(), userDetails.getEmail())) {
+		if (userService.checkIfUserExists(userDetails.getCF(), userDetails.getEmail())) {
 			throw new UserException("User already exists");
 		}
 
@@ -79,6 +82,9 @@ public class AuthMiddleware {
 
 	}
 
-
-
+	@Override
+	@Transactional
+	public void changePassword(Authentication authentication, String newPassword) {
+		credentialService.changePassword(authentication.getName(), newPassword);
+	}
 }

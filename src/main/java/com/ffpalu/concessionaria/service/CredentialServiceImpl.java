@@ -8,6 +8,7 @@ import com.ffpalu.concessionaria.exceptions.BadCredential;
 import com.ffpalu.concessionaria.repository.CredentialRepository;
 import com.ffpalu.concessionaria.service.interfaces.CredentialService;
 import com.ffpalu.concessionaria.utils.Mapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class CredentialServiceImpl implements CredentialService {
 
 	private final CredentialRepository credentialRepository;
+	private final PasswordEncoder passwordEncoder;
 	private final Mapper mapper;
 
 	@Override
@@ -36,6 +38,16 @@ public class CredentialServiceImpl implements CredentialService {
 
 
 		return credentialRepository.save(newCredential);
+	}
+
+	@Override
+	@Transactional
+	public Credential changePassword(String username, String newPassword) {
+		Credential credential = credentialRepository.findByUsername(username).orElseThrow(() -> new BadCredential("User not found"));
+
+		Credential updatedCredential = credential.withPassword(passwordEncoder.encode(newPassword));
+
+		return credentialRepository.save(updatedCredential);
 	}
 
 	@Override

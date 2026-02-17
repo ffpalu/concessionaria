@@ -6,8 +6,8 @@ import com.ffpalu.concessionaria.entity.User;
 
 public interface SellerService {
 
-    public boolean checkIfPresent(String employeeCode);
+    boolean checkIfPresent(String employeeCode);
 
-    public Seller createSeller(RegistrationSellerDetailsRequest request, User user);
+    Seller createSeller(RegistrationSellerDetailsRequest request, User user);
 
 }

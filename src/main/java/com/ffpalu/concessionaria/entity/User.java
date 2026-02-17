@@ -11,6 +11,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@With
 public class User {
 
 	@Id
@@ -28,6 +29,10 @@ public class User {
 
 	@Column(nullable = false, unique = true)
 	private String email;
+
+	@Column(nullable = false)
+	@Builder.Default
+	private boolean isActive = true;
 
 	@Column(name = "created_at", nullable = false)
 	private LocalDateTime createdAt;
@@ -51,6 +56,10 @@ public class User {
 	@PreUpdate
 	protected void onUpdate() {
 		this.updatedAt = LocalDateTime.now();
+	}
+
+	public void deactivate() {
+		isActive = false;
 	}
 
 
