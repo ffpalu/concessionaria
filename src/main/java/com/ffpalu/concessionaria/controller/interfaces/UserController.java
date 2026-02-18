@@ -3,6 +3,7 @@ package com.ffpalu.concessionaria.controller.interfaces;
 import com.ffpalu.concessionaria.dto.request.RegistrationRequest;
 import com.ffpalu.concessionaria.dto.response.UserResponse;
 import com.ffpalu.concessionaria.dto.validation.UserValidationGroup;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RequestMapping("api/user")
+@SecurityRequirement(name = "bearerAuth")
 public interface UserController {
 
     @GetMapping("/")

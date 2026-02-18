@@ -6,6 +6,7 @@ import com.ffpalu.concessionaria.dto.response.AuthResponse;
 import com.ffpalu.concessionaria.dto.response.UserResponse;
 import com.ffpalu.concessionaria.dto.validation.CredentialValidationGroup;
 import com.ffpalu.concessionaria.dto.validation.RegistrationValidationGroup;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public interface AuthController {
 
 	@PostMapping("/register")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPPORT')")
+    @SecurityRequirement(name = "bearerAuth")
     ResponseEntity<String> register(
             @RequestBody @Validated({CredentialValidationGroup.Create.class, RegistrationValidationGroup.RegistrationOther.class})
             RegistrationWrapperRequest request
@@ -32,12 +34,14 @@ public interface AuthController {
 
 	@PostMapping("/register/seller")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPPORT')")
+    @SecurityRequirement(name = "bearerAuth")
     ResponseEntity<String> registerSeller(
             @RequestBody @Validated({CredentialValidationGroup.Create.class, RegistrationValidationGroup.RegistrationSeller.class})
             RegistrationWrapperRequest request
     );
 
     @PatchMapping("/changepassword")
+    @SecurityRequirement(name = "bearerAuth")
     ResponseEntity<String> changePassword(
             Authentication auth,
             @RequestBody String newPassword

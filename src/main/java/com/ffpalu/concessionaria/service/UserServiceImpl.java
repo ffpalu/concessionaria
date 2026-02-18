@@ -1,7 +1,6 @@
 package com.ffpalu.concessionaria.service;
 
 import com.ffpalu.concessionaria.dto.request.RegistrationRequest;
-import com.ffpalu.concessionaria.dto.request.RegistrationWrapperRequest;
 import com.ffpalu.concessionaria.dto.response.UserResponse;
 import com.ffpalu.concessionaria.entity.User;
 import com.ffpalu.concessionaria.exceptions.UserException;
@@ -15,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
