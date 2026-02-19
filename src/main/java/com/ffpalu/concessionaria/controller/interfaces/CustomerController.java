@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/customer")
 public interface CustomerController {
 
-    @PostMapping("/create")
+    @PutMapping("/create")
     ResponseEntity<CustomerResponse> createCustomer(
             @RequestBody
             @Validated({CustomerValidation.Creation.class})

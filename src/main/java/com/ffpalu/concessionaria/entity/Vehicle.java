@@ -1,14 +1,18 @@
 package com.ffpalu.concessionaria.entity;
 
+import com.ffpalu.concessionaria.annotation.interfaces.MinYear;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.UUID;
 
 
@@ -30,16 +34,20 @@ public class Vehicle {
 	private String model;
 	private Boolean used;
 
-	@Min(value = 1950, message = "Vehicle too old")
-	private Integer year;
+	@PastOrPresent(message = "Year min 1950")
+	@MinYear(value = 1950, message = "vehicle too old")
+	private Year year;
 
-	@Min(value = 0, message = "il numero minimo di km deve essere 0")
+	@PositiveOrZero(message = "number of kilometer must be at least 0")
 	private Integer numberOfKilometers;
 
 	@OneToOne(mappedBy = "vehicle")
 	private Sale sale;
 
+	@Column(name = "created_at")
 	private LocalDateTime createdAt;
+
+	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
 

@@ -33,7 +33,7 @@ public class Customer {
 	@Email(message = "Insert a valid email")
 	private String email;
 
-	@Column(nullable = false, unique = true, name = "fiscal_code")
+	@Column(name = "fiscal_code", nullable = false, unique = true)
 	private String CF;
 
 	@Formula("(SELECT COUNT(*) FROM sale s WHERE s.customer_id = id)")

@@ -1,16 +1,11 @@
 package com.ffpalu.concessionaria.utils;
 
-import com.ffpalu.concessionaria.dto.request.CredentialRequest;
-import com.ffpalu.concessionaria.dto.request.RegistrationCustomer;
-import com.ffpalu.concessionaria.dto.request.RegistrationRequest;
-import com.ffpalu.concessionaria.dto.request.RegistrationSellerDetailsRequest;
+import com.ffpalu.concessionaria.dto.request.*;
 import com.ffpalu.concessionaria.dto.response.AuthResponse;
 import com.ffpalu.concessionaria.dto.response.CustomerResponse;
 import com.ffpalu.concessionaria.dto.response.UserResponse;
-import com.ffpalu.concessionaria.entity.Credential;
-import com.ffpalu.concessionaria.entity.Customer;
-import com.ffpalu.concessionaria.entity.Seller;
-import com.ffpalu.concessionaria.entity.User;
+import com.ffpalu.concessionaria.dto.response.VehicleResponse;
+import com.ffpalu.concessionaria.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -28,6 +23,8 @@ public class Mapper {
 						.firstName(user.getFirstName())
 						.lastName(user.getLastName())
 						.CF(user.getCF())
+						.createdAt(user.getCreatedAt())
+						.updatedAt(user.getUpdatedAt())
 						.build();
 	}
 
@@ -82,6 +79,33 @@ public class Mapper {
 				.lastName(customer.getEmail())
 				.CF(customer.getCF())
 				.numberOfSales(customer.getSalesCount())
+				.build();
+	}
+
+	public VehicleResponse mapToVehicleResponse(Vehicle vehicle) {
+		return VehicleResponse.builder()
+				.plate(vehicle.getPlate())
+				.model(vehicle.getModel())
+				.brand(vehicle.getBrand())
+				.used(vehicle.getUsed())
+				.year(vehicle.getYear())
+				.id(vehicle.getId())
+				.sold(vehicle.getSale() != null)
+				.createdAt(vehicle.getCreatedAt())
+				.updatedAt(vehicle.getUpdatedAt())
+				.numberOfKilometers(vehicle.getNumberOfKilometers())
+				.build();
+
+	}
+
+	public Vehicle mapToVehicle(RegistrationVehicleRequest vehicleRequest) {
+		return Vehicle.builder()
+				.plate(vehicleRequest.getPlate())
+				.model(vehicleRequest.getModel())
+				.brand(vehicleRequest.getBrand())
+				.used(vehicleRequest.getUsed())
+				.year(vehicleRequest.getYear())
+				.numberOfKilometers(vehicleRequest.getNumberOfKilometers())
 				.build();
 	}
 

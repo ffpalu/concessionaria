@@ -32,10 +32,13 @@ public class SecurityConfig {
 														.requestMatchers("/swagger-ui/**").permitAll()
 
 														.requestMatchers("/api/auth/login").permitAll()
+														.requestMatchers("/api/vehicle/**").permitAll()
+
 
 														.requestMatchers("/api/auth/**").authenticated()
 														.requestMatchers("/api/user/**").authenticated()
 														.requestMatchers("/api/customer/**").authenticated()
+														.requestMatchers("/api/vehicle/create").authenticated()
 
 														.anyRequest().authenticated()
 										)
