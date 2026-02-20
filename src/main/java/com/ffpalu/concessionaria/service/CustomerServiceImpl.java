@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
     @Override
-    public CustomerResponse createCustomer(RegistrationCustomer customer) {
+    public CustomerResponse createCustomerResponse(RegistrationCustomer customer) {
         if(customerRepository.existsByCF(customer.getCF())) {
             throw new CustomerException("Customer already present");
         }
@@ -35,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerResponse updateCustomer(RegistrationCustomer customer, UUID id) {
+    public CustomerResponse updateCustomerResponse(RegistrationCustomer customer, UUID id) {
         Customer customerToUpdate = customerRepository.findById(id)
                 .orElseThrow(() -> new CustomerException("User not found for updating"));
 
@@ -62,10 +63,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerResponse getByCF(String CF) {
-        Customer findedCustomer = customerRepository.findByCF(CF).orElseThrow(() -> new CustomerException("User with CF " + CF + " not found"));
+    public Optional<CustomerResponse> getCustomerResponseByCF(String CF) {
+        Optional<Customer> findedCustomer = customerRepository.findByCF(CF);
 
-        return mapper.mapToCustomerResponse(findedCustomer);
+        return findedCustomer.map(mapper::mapToCustomerResponse);
     }
 
     public Customer updateCustomerOrDefault(Customer customer, RegistrationCustomer updaterCustomer) {

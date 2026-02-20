@@ -13,7 +13,7 @@ import java.util.UUID;
 public class RegistrationVehicleRequest {
 
     @NotBlank(groups = VehicleValidation.Modify.class)
-    private UUID id;
+    private String id;
 
     @NotBlank(message = "Plate required")
     @Size(min = 2, message = "Plate must be at least 2 char")

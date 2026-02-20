@@ -10,11 +10,12 @@ import java.util.UUID;
 
 public interface CustomerService {
 
-    CustomerResponse createCustomer(RegistrationCustomer customer);
 
-    CustomerResponse updateCustomer(RegistrationCustomer customer, UUID id);
+    CustomerResponse createCustomerResponse(RegistrationCustomer customer);
 
-    CustomerResponse getByCF(String CF);
+    CustomerResponse updateCustomerResponse(RegistrationCustomer customer, UUID id);
+
+    Optional<CustomerResponse> getCustomerResponseByCF(String CF);
 
     Page<CustomerResponse> getAllCustomer(Pageable pageable);
 

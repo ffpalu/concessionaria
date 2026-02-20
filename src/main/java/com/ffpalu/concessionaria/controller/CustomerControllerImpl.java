@@ -22,7 +22,7 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     public ResponseEntity<CustomerResponse> createCustomer(RegistrationCustomer customer) {
-        CustomerResponse customerCreated = customerService.createCustomer(customer);
+        CustomerResponse customerCreated = customerService.createCustomerResponse(customer);
         return ResponseEntity.status(201).body(customerCreated);
     }
 
@@ -34,14 +34,13 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     public ResponseEntity<CustomerResponse> getByCF(String CF) {
-        CustomerResponse customerResponse = customerService.getByCF(CF);
+        CustomerResponse customerResponse = customerService.getCustomerResponseByCF(CF).orElseThrow();
         return ResponseEntity.ok(customerResponse);
     }
 
     @Override
     public ResponseEntity<CustomerResponse> updateCustomer(RegistrationCustomer customer, String ID) {
-        log.info("converting {} to uuid {}", ID, UUID.fromString(ID));
-        CustomerResponse updatedCustomer = customerService.updateCustomer(customer, UUID.fromString(ID));
+        CustomerResponse updatedCustomer = customerService.updateCustomerResponse(customer, UUID.fromString(ID));
         return ResponseEntity.ok(updatedCustomer);
     }
 

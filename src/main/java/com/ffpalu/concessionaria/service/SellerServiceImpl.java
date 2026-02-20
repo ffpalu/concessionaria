@@ -8,7 +8,14 @@ import com.ffpalu.concessionaria.repository.SellerRepository;
 import com.ffpalu.concessionaria.service.interfaces.SellerService;
 import com.ffpalu.concessionaria.utils.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +39,22 @@ public class SellerServiceImpl implements SellerService {
 
         return sellerRepository.save(seller);
 
+    }
+
+    @Override
+    public Page<Seller> getSellerByOrderedByNumSales(Pageable pageable) {
+        Pageable pageable1 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("salesCount").descending());
+
+        return sellerRepository.findAll(pageable1);
+    }
+
+    @Override
+    public Optional<Seller> findByUsername(String username) {
+        return sellerRepository.findByUsername(username);
+    }
+
+    @Override
+    public Optional<Seller> findById(UUID id) {
+        return sellerRepository.findById(id);
     }
 }

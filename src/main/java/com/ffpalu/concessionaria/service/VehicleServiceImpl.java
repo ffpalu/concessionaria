@@ -39,12 +39,12 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Optional<Vehicle> getVehicleByPlate(String plate) {
-        return Optional.empty();
+        return vehicleRepository.findByPlate(plate);
     }
 
     @Override
     public Optional<Vehicle> getVehicleById(UUID id) {
-        return Optional.empty();
+        return vehicleRepository.findById(id);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class VehicleServiceImpl implements VehicleService {
             throw new VehicleException("Vehicle vehicle request to update must have an ID");
         }
 
-        Vehicle vehicleUpdate = vehicleRepository.findById(vehicleRequest.getId())
+        Vehicle vehicleUpdate = vehicleRepository.findById(UUID.fromString(vehicleRequest.getId()))
                 .orElseThrow(() -> new VehicleException("Vehicle not found"));
 
         vehicleUpdate = Vehicle.builder()

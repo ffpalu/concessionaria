@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,6 +36,8 @@ public class Seller {
 	@Column(name = "business_phone")
 	private String businessPhone;
 
+	@Formula("(SELECT COUNT(*) FROM sale s WHERE s.seller_id = id)")
+	private int salesCount;
 
 	@OneToMany(mappedBy = "seller")
 	private List<Sale> sales;

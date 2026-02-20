@@ -1,10 +1,8 @@
 package com.ffpalu.concessionaria.utils;
 
 import com.ffpalu.concessionaria.dto.request.*;
-import com.ffpalu.concessionaria.dto.response.AuthResponse;
-import com.ffpalu.concessionaria.dto.response.CustomerResponse;
-import com.ffpalu.concessionaria.dto.response.UserResponse;
-import com.ffpalu.concessionaria.dto.response.VehicleResponse;
+import com.ffpalu.concessionaria.dto.response.*;
+import com.ffpalu.concessionaria.dto.support.SaleDTO;
 import com.ffpalu.concessionaria.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -72,11 +70,22 @@ public class Mapper {
 				.build();
 	}
 
+	public SellerDetailsResponse mapToSellerDetailsResponse(Seller seller) {
+		return SellerDetailsResponse.builder()
+				.id(seller.getId())
+				.employeeCode(seller.getEmployeeCode())
+				.hireDate(seller.getHireDate())
+				.businessPhone(seller.getBusinessPhone())
+				.userDetails(mapToUserResponse(seller.getUser()))
+				.build();
+	}
+
 	public CustomerResponse mapToCustomerResponse(Customer customer) {
 		return CustomerResponse.builder()
 				.id(customer.getId())
 				.firstName(customer.getFirstName())
-				.lastName(customer.getEmail())
+				.lastName(customer.getLastName())
+				.email(customer.getEmail())
 				.CF(customer.getCF())
 				.numberOfSales(customer.getSalesCount())
 				.build();
@@ -98,6 +107,7 @@ public class Mapper {
 
 	}
 
+
 	public Vehicle mapToVehicle(RegistrationVehicleRequest vehicleRequest) {
 		return Vehicle.builder()
 				.plate(vehicleRequest.getPlate())
@@ -108,5 +118,39 @@ public class Mapper {
 				.numberOfKilometers(vehicleRequest.getNumberOfKilometers())
 				.build();
 	}
+
+	public Sale mapToSale(SaleDTO sale) {
+		return Sale.builder()
+				.sellDate(sale.getSellDate())
+				.price(sale.getPrice())
+				.sellerId(sale.getSeller())
+				.customerId(sale.getCustomer())
+				.vehicleId(sale.getVehicle())
+				.build();
+	}
+
+	public SaleResponse mapToSaleResponse(Sale sale, SellerDetailsResponse seller, CustomerResponse customer, VehicleResponse vehicle ){
+		return SaleResponse.builder()
+				.id(sale.getId())
+				.sellDate(sale.getSellDate())
+				.price(sale.getPrice())
+				.seller(seller)
+				.customer(customer)
+				.vehicle(vehicle)
+				.build();
+	}
+
+	public SaleResponse mapToSaleResponse(Sale sale){
+		return SaleResponse.builder()
+				.id(sale.getId())
+				.sellDate(sale.getSellDate())
+				.price(sale.getPrice())
+				.seller(mapToSellerDetailsResponse(sale.getSeller()))
+				.customer(mapToCustomerResponse(sale.getCustomer()))
+				.vehicle(mapToVehicleResponse(sale.getVehicle()))
+				.build();
+	}
+
+
 
 }

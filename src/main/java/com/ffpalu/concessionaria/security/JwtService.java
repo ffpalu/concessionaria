@@ -52,6 +52,9 @@ public class JwtService {
 		return extractExpirationDateFromToken(token).before(new Date());
 	}
 
+	public String extractUserIdFromToken(String token) {
+		return extractFieldFromClaimToken(token, claims -> claims.get("userId").toString());
+	}
 
 	public String extractUsernameFromToken(String token) {
 		return extractFieldFromClaimToken(token, Claims::getSubject);

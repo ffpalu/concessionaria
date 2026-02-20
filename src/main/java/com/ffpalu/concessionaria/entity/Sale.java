@@ -28,15 +28,24 @@ public class Sale {
 	private Double price;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "seller_id", nullable = false)
+	@JoinColumn(name = "seller_id", nullable = false, insertable = false, updatable = false)
 	private Seller seller;
 
+	@Column(name = "seller_id", nullable = false)
+	private UUID sellerId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "customer_id", nullable = false)
+	@JoinColumn(name = "customer_id", nullable = false, insertable=false, updatable=false)
 	private Customer customer;
 
+	@Column(name = "customer_id", nullable = false)
+	private UUID customerId;
+
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "vehicle_id", nullable = false, unique = true)
+	@JoinColumn(name = "vehicle_id", nullable = false, unique = true, insertable = false, updatable = false)
 	private Vehicle vehicle;
+
+	@Column(name = "vehicle_id", nullable = false, unique = true)
+	private UUID vehicleId;
 
 }
