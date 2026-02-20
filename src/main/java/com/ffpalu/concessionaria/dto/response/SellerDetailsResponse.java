@@ -18,6 +18,6 @@ public class SellerDetailsResponse {
 
     private String businessPhone;
 
-    private UserResponse userDetails;
+    private UserDetailsResponse userDetails;
 
 }

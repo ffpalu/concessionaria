@@ -8,7 +8,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class SaleRequest {
+public class SaleWrappedRequest {
 
     @PastOrPresent(message = "Insert a sell date past or present") //Dubbio se poter impostare date di vendita future
     private LocalDate sellDate;

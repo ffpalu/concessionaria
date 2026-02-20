@@ -1,7 +1,7 @@
 package com.ffpalu.concessionaria.controller;
 
 import com.ffpalu.concessionaria.controller.interfaces.SaleController;
-import com.ffpalu.concessionaria.dto.request.SaleRequest;
+import com.ffpalu.concessionaria.dto.request.SaleWrappedRequest;
 import com.ffpalu.concessionaria.dto.response.SaleResponse;
 import com.ffpalu.concessionaria.middleware.interfaces.SaleMiddleware;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class SaleControllerImpl implements SaleController {
     private final SaleMiddleware saleMiddleware;
 
     @Override
-    public ResponseEntity<SaleResponse> createSale(SaleRequest request, Authentication auth) {
+    public ResponseEntity<SaleResponse> createSale(SaleWrappedRequest request, Authentication auth) {
        SaleResponse saleResponse = saleMiddleware.createSale(request, auth.getName());
        return ResponseEntity.status(HttpStatus.CREATED).body(saleResponse);
     }

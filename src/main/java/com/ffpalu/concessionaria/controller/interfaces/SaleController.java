@@ -1,8 +1,7 @@
 package com.ffpalu.concessionaria.controller.interfaces;
 
-import com.ffpalu.concessionaria.dto.request.SaleRequest;
+import com.ffpalu.concessionaria.dto.request.SaleWrappedRequest;
 import com.ffpalu.concessionaria.dto.response.SaleResponse;
-import com.ffpalu.concessionaria.entity.Sale;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +18,7 @@ public interface SaleController {
     @PutMapping("/create")
     ResponseEntity<SaleResponse> createSale(
             @RequestBody
-            SaleRequest request,
+            SaleWrappedRequest request,
             Authentication auth
     );
 

@@ -1,9 +1,9 @@
 package com.ffpalu.concessionaria.middleware;
 
-import com.ffpalu.concessionaria.dto.request.SaleRequest;
+import com.ffpalu.concessionaria.dto.request.SaleWrappedRequest;
 import com.ffpalu.concessionaria.dto.response.CustomerResponse;
 import com.ffpalu.concessionaria.dto.response.SaleResponse;
-import com.ffpalu.concessionaria.dto.support.SaleDTO;
+import com.ffpalu.concessionaria.dto.support.SaleUnwrappedDTO;
 import com.ffpalu.concessionaria.entity.*;
 import com.ffpalu.concessionaria.exceptions.CustomerException;
 import com.ffpalu.concessionaria.exceptions.SellerException;
@@ -36,7 +36,7 @@ public class SaleMiddlewareImpl implements SaleMiddleware {
     private final Mapper mapper;
 
     @Override
-    public SaleResponse createSale(SaleRequest request, String username) {
+    public SaleResponse createSale(SaleWrappedRequest request, String username) {
 
         Vehicle vehicleToSold = vehicleService.getVehicleByPlate(request.getVehiclePlate())
                 .orElseThrow(() -> new VehicleException("Vehicle not found"));
@@ -47,16 +47,16 @@ public class SaleMiddlewareImpl implements SaleMiddleware {
         }
 
 
-        CustomerResponse customerMapped = customerService.getCustomerResponseByCF(request.getCustomerCF())
+        Customer customer = customerService.getCustomerByCF(request.getCustomerCF())
                 .orElseThrow(() -> new CustomerException("Customer not found"));
 
         Seller seller = sellerService.findByUsername(username)
                 .orElseThrow( ()-> new SellerException("Seller not found"));
 
-        SaleDTO saleDTO = SaleDTO.builder()
+        SaleUnwrappedDTO saleDTO = SaleUnwrappedDTO.builder()
                 .sellDate(request.getSellDate())
                 .price(request.getPrice())
-                .customer(customerMapped.getId())
+                .customer(customer.getId())
                 .vehicle(vehicleToSold.getId())
                 .seller(seller.getId())
                 .build();
@@ -64,7 +64,7 @@ public class SaleMiddlewareImpl implements SaleMiddleware {
 
         Sale sale = saleService.createSale(saleDTO);
 
-        return mapper.mapToSaleResponse(sale, mapper.mapToSellerDetailsResponse(seller), customerMapped, mapper.mapToVehicleResponse(vehicleToSold));
+        return mapper.mapToSaleResponse(sale, mapper.mapToSellerDetailsResponse(seller), mapper.mapToCustomerResponse(customer), mapper.mapToVehicleResponse(vehicleToSold));
 
     }
 

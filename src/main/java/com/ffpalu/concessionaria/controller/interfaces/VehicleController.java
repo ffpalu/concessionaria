@@ -1,6 +1,6 @@
 package com.ffpalu.concessionaria.controller.interfaces;
 
-import com.ffpalu.concessionaria.dto.request.RegistrationVehicleRequest;
+import com.ffpalu.concessionaria.dto.request.VehicleRequest;
 import com.ffpalu.concessionaria.dto.response.VehicleResponse;
 import com.ffpalu.concessionaria.dto.validation.VehicleValidation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -21,7 +21,7 @@ public interface VehicleController {
     ResponseEntity<VehicleResponse> createVehicle(
             @RequestBody
             @Validated(VehicleValidation.Creation.class)
-            RegistrationVehicleRequest vehicle
+            VehicleRequest vehicle
     );
 
     @SecurityRequirement(name = "bearerAuth")
@@ -29,7 +29,7 @@ public interface VehicleController {
     ResponseEntity<VehicleResponse> updateVehicle(
             @RequestBody
             @Validated(VehicleValidation.Modify.class)
-            RegistrationVehicleRequest vehicle
+            VehicleRequest vehicle
     );
 
 

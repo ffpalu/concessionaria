@@ -3,7 +3,6 @@ package com.ffpalu.concessionaria.service;
 import com.ffpalu.concessionaria.dto.request.CredentialRequest;
 import com.ffpalu.concessionaria.entity.Credential;
 import com.ffpalu.concessionaria.entity.User;
-import com.ffpalu.concessionaria.entity.enums.Role;
 import com.ffpalu.concessionaria.exceptions.BadCredential;
 import com.ffpalu.concessionaria.repository.CredentialRepository;
 import com.ffpalu.concessionaria.service.interfaces.CredentialService;
@@ -42,13 +41,13 @@ public class CredentialServiceImpl implements CredentialService {
 
 	@Override
 	@Transactional
-	public Credential changePassword(String username, String newPassword) {
+	public void changePassword(String username, String newPassword) {
 		Credential credential = credentialRepository.findByUsername(username).orElseThrow(() -> new BadCredential("User not found"));
 
 		Credential updatedCredential = credential.withPassword(passwordEncoder.encode(newPassword));
 
-		return credentialRepository.save(updatedCredential);
-	}
+        credentialRepository.save(updatedCredential);
+    }
 
 	@Override
 	public boolean checkIfCredentialExists(String username) {

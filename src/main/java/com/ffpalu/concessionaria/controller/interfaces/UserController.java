@@ -1,7 +1,7 @@
 package com.ffpalu.concessionaria.controller.interfaces;
 
-import com.ffpalu.concessionaria.dto.request.RegistrationRequest;
-import com.ffpalu.concessionaria.dto.response.UserResponse;
+import com.ffpalu.concessionaria.dto.request.UserDetailsRequest;
+import com.ffpalu.concessionaria.dto.response.UserDetailsResponse;
 import com.ffpalu.concessionaria.dto.validation.UserValidationGroup;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotBlank;
@@ -12,20 +12,18 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RequestMapping("api/user")
 @SecurityRequirement(name = "bearerAuth")
 public interface UserController {
 
     @GetMapping("/")
-    ResponseEntity<Page<UserResponse>> getAllUsers(Pageable pageable);
+    ResponseEntity<Page<UserDetailsResponse>> getAllUsers(Pageable pageable);
 
     @GetMapping("/{CF}")
     ResponseEntity<?> getByCF(@PathVariable @NotBlank String CF);
 
     @GetMapping("/search")
-    ResponseEntity<Page<UserResponse>> getByNameAndSurname(
+    ResponseEntity<Page<UserDetailsResponse>> getByNameAndSurname(
             @RequestParam String name,
             @RequestParam String surname,
             Pageable pageable
@@ -33,8 +31,8 @@ public interface UserController {
 
     @PatchMapping("/{ID}")
     @PreAuthorize("hasAnyRole('ROLE_SUPPORT', 'ROLE_ADMIN')")
-    ResponseEntity<UserResponse> updateUser(
-            @RequestBody @Validated(UserValidationGroup.Modify.class) RegistrationRequest fieldToPatch,
+    ResponseEntity<UserDetailsResponse> updateUser(
+            @RequestBody @Validated(UserValidationGroup.Modify.class) UserDetailsRequest fieldToPatch,
             @PathVariable String ID
             );
 

@@ -1,9 +1,8 @@
 package com.ffpalu.concessionaria.service.interfaces;
 
 
-import com.ffpalu.concessionaria.dto.support.SaleDTO;
+import com.ffpalu.concessionaria.dto.support.SaleUnwrappedDTO;
 import com.ffpalu.concessionaria.entity.Sale;
-import com.ffpalu.concessionaria.entity.Seller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,9 +10,9 @@ import java.util.UUID;
 
 public interface SaleService {
 
-    Sale createSale(SaleDTO saleToCreate);
+    Sale createSale(SaleUnwrappedDTO saleToCreate);
 
-    Sale updateSale(SaleDTO saleToUpdate, UUID id);
+    Sale updateSale(SaleUnwrappedDTO saleToUpdate, UUID id);
 
     Page<Sale> getSaleOfSeller(UUID seller, Pageable pageable);
 

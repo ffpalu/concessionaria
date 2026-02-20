@@ -1,7 +1,7 @@
 package com.ffpalu.concessionaria.service;
 
-import com.ffpalu.concessionaria.dto.request.RegistrationRequest;
-import com.ffpalu.concessionaria.dto.response.UserResponse;
+import com.ffpalu.concessionaria.dto.request.UserDetailsRequest;
+import com.ffpalu.concessionaria.dto.response.UserDetailsResponse;
 import com.ffpalu.concessionaria.entity.User;
 import com.ffpalu.concessionaria.exceptions.UserException;
 import com.ffpalu.concessionaria.repository.UserRepository;
@@ -31,14 +31,6 @@ public class UserServiceImpl implements UserService {
 		return userRepository.getUserByUsername(username);
 	}
 
-	@Override
-	public Optional<UserResponse> getUserByUsernameMapped(String username) {
-
-		Optional<User> user = getUserByUsername(username);
-
-        return user.map(mapper::mapToUserResponse);
-    }
-
 
 	@Override
 	public boolean checkIfUserExists(String CF, String mail) {
@@ -46,7 +38,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User createUser(RegistrationRequest request) {
+	public User createUser(UserDetailsRequest request) {
 		if (checkIfUserExists(request.getCF(), request.getEmail())) {
 			throw new UserException("User already exists");
 		}
@@ -57,25 +49,20 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Optional<UserResponse> getUserByCF(String CF) {
+	public Optional<User> getUserByCF(String CF) {
 
-		Optional<User> user = userRepository.findUserByCF(CF);
-
-		return user.map(mapper::mapToUserResponse);
+        return userRepository.findUserByCF(CF);
 	}
 
 	@Override
-	public Page<UserResponse> getUserByNameAndSurname(String name, String surname, Pageable pageable) {
-		Page<User> listOfUsers = userRepository.findByFirstNameAndLastName(name,surname,pageable);
-
-		return listOfUsers.map(mapper::mapToUserResponse);
+	public Page<User> getUserByNameAndSurname(String name, String surname, Pageable pageable) {
+        return userRepository.findByFirstNameAndLastName(name,surname,pageable);
 	}
 
 	@Override
-	public Page<UserResponse> getAllUser(Pageable pageable) {
-		Page<User> users = userRepository.findAll(pageable);
+	public Page<User> getAllUser(Pageable pageable) {
 
-		return users.map(mapper::mapToUserResponse);
+        return userRepository.findAll(pageable);
 	}
 
 
@@ -90,7 +77,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserResponse updateUser(UUID id, RegistrationRequest request) {
+	public User updateUser(UUID id, UserDetailsRequest request) {
 		User userToModify = userRepository.findById(id).orElseThrow(() -> new UserException("User to patched not found"));
 
 		for(Field fieldDTO : request.getClass().getDeclaredFields()) {
@@ -118,8 +105,6 @@ public class UserServiceImpl implements UserService {
 
 		}
 
-		User modified = userRepository.save(userToModify);
-
-		return mapper.mapToUserResponse(modified);
+        return userRepository.save(userToModify);
 	}
 }

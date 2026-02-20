@@ -2,7 +2,7 @@ package com.ffpalu.concessionaria.utils;
 
 import com.ffpalu.concessionaria.dto.request.*;
 import com.ffpalu.concessionaria.dto.response.*;
-import com.ffpalu.concessionaria.dto.support.SaleDTO;
+import com.ffpalu.concessionaria.dto.support.SaleUnwrappedDTO;
 import com.ffpalu.concessionaria.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,8 +14,8 @@ public class Mapper {
 
 	private final PasswordEncoder passwordEncoder;
 
-	public UserResponse mapToUserResponse(User user) {
-		return UserResponse.builder()
+	public UserDetailsResponse mapToUserResponse(User user) {
+		return UserDetailsResponse.builder()
 						.id(user.getId())
 						.email(user.getEmail())
 						.firstName(user.getFirstName())
@@ -26,7 +26,7 @@ public class Mapper {
 						.build();
 	}
 
-	public User mapToUser(RegistrationRequest request) {
+	public User mapToUser(UserDetailsRequest request) {
 		return User.builder()
 				.firstName(request.getFirstName())
 				.lastName(request.getLastName())
@@ -52,7 +52,7 @@ public class Mapper {
 				.build();
 	}
 
-	public Seller mapToSeller(RegistrationSellerDetailsRequest request, User user) {
+	public Seller mapToSeller(SellerDetailsRequest request, User user) {
 		return Seller.builder()
 				.employeeCode(request.getEmployeeCode())
 				.businessPhone(request.getBusinessPhone())
@@ -61,7 +61,7 @@ public class Mapper {
 				.build();
 	}
 
-	public Customer mapToCustomer(RegistrationCustomer customer) {
+	public Customer mapToCustomer(CustomerRequest customer) {
 		return Customer.builder()
 				.firstName(customer.getFirstName())
 				.lastName(customer.getLastName())
@@ -108,7 +108,7 @@ public class Mapper {
 	}
 
 
-	public Vehicle mapToVehicle(RegistrationVehicleRequest vehicleRequest) {
+	public Vehicle mapToVehicle(VehicleRequest vehicleRequest) {
 		return Vehicle.builder()
 				.plate(vehicleRequest.getPlate())
 				.model(vehicleRequest.getModel())
@@ -119,7 +119,7 @@ public class Mapper {
 				.build();
 	}
 
-	public Sale mapToSale(SaleDTO sale) {
+	public Sale mapToSale(SaleUnwrappedDTO sale) {
 		return Sale.builder()
 				.sellDate(sale.getSellDate())
 				.price(sale.getPrice())

@@ -1,6 +1,6 @@
 package com.ffpalu.concessionaria.service;
 
-import com.ffpalu.concessionaria.dto.request.RegistrationVehicleRequest;
+import com.ffpalu.concessionaria.dto.request.VehicleRequest;
 import com.ffpalu.concessionaria.dto.response.VehicleResponse;
 import com.ffpalu.concessionaria.entity.Vehicle;
 import com.ffpalu.concessionaria.exceptions.VehicleException;
@@ -23,7 +23,7 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleRepository vehicleRepository;
 
     @Override
-    public VehicleResponse createVehicle(RegistrationVehicleRequest vehicleRequest) {
+    public Vehicle createVehicle(VehicleRequest vehicleRequest) {
         if (vehicleRepository.existsByPlate(vehicleRequest.getPlate())) {
             throw new VehicleException("Vehicle already insert");
         }
@@ -32,7 +32,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         vehicle = vehicleRepository.save(vehicle);
 
-        return mapper.mapToVehicleResponse(vehicle);
+        return vehicle;
 
 
     }
@@ -43,19 +43,11 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public Optional<Vehicle> getVehicleById(UUID id) {
-        return vehicleRepository.findById(id);
+    public Vehicle getVehicleById(UUID id) {
+        return vehicleRepository.findById(id)
+                .orElseThrow(() -> new VehicleException("Vehicle not found"));
     }
 
-    @Override
-    public Optional<VehicleResponse> getVehicleResponseByPlate(String plate) {
-        return getVehicleByPlate(plate).map(mapper::mapToVehicleResponse);
-    }
-
-    @Override
-    public Optional<VehicleResponse> getVehicleResponseById(UUID id) {
-        return getVehicleById(id).map(mapper::mapToVehicleResponse);
-    }
 
     @Override
     public Page<Vehicle> getVehicleFromModelAndBrand(String model, String brand, Pageable pageable) {
@@ -63,23 +55,13 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public Page<VehicleResponse> getVehicleResponseFromModelAndBrand(String model, String brand, Pageable pageable) {
-        return getVehicleFromModelAndBrand(model, brand, pageable)
-                .map(mapper::mapToVehicleResponse);
-    }
-
-    @Override
     public Page<Vehicle> getAllVehicle(Pageable pageable) {
         return vehicleRepository.findAll(pageable);
     }
 
-    @Override
-    public Page<VehicleResponse> getAllVehicleResponse(Pageable pageable) {
-        return getAllVehicle(pageable).map(mapper::mapToVehicleResponse);
-    }
 
     @Override
-    public Vehicle updateVehicle(RegistrationVehicleRequest vehicleRequest) {
+    public Vehicle updateVehicle(VehicleRequest vehicleRequest) {
 
         if (vehicleRequest.getId() == null) {
             throw new VehicleException("Vehicle vehicle request to update must have an ID");
@@ -102,9 +84,5 @@ public class VehicleServiceImpl implements VehicleService {
 
     }
 
-    @Override
-    public VehicleResponse updateVehicleResponse(RegistrationVehicleRequest vehicleRequest) {
-        return mapper.mapToVehicleResponse(updateVehicle(vehicleRequest));
-    }
 
 }

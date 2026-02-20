@@ -1,10 +1,10 @@
 package com.ffpalu.concessionaria.controller;
 
 import com.ffpalu.concessionaria.controller.interfaces.VehicleController;
-import com.ffpalu.concessionaria.dto.request.RegistrationVehicleRequest;
+import com.ffpalu.concessionaria.dto.request.VehicleRequest;
 import com.ffpalu.concessionaria.dto.response.VehicleResponse;
 import com.ffpalu.concessionaria.exceptions.VehicleException;
-import com.ffpalu.concessionaria.service.interfaces.VehicleService;
+import com.ffpalu.concessionaria.middleware.interfaces.VehicleMiddleware;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,43 +18,41 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class VehicleControllerImpl implements VehicleController {
 
-    private final VehicleService vehicleService;
+    private final VehicleMiddleware vehicleMiddleware;
 
     @Override
-    public ResponseEntity<VehicleResponse> createVehicle(RegistrationVehicleRequest vehicle) {
-        VehicleResponse response = vehicleService.createVehicle(vehicle);
+    public ResponseEntity<VehicleResponse> createVehicle(VehicleRequest vehicle) {
+        VehicleResponse response = vehicleMiddleware.createVehicle(vehicle);
         return ResponseEntity.ok(response);
     }
 
     @Override
-    public ResponseEntity<VehicleResponse> updateVehicle(RegistrationVehicleRequest vehicle) {
-        VehicleResponse response = vehicleService.updateVehicleResponse(vehicle);
+    public ResponseEntity<VehicleResponse> updateVehicle(VehicleRequest vehicle) {
+        VehicleResponse response = vehicleMiddleware.updateVehicle(vehicle);
         return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<Page<VehicleResponse>> getAllVehicle(Pageable pageable) {
-        Page<VehicleResponse> allVehicle = vehicleService.getAllVehicleResponse(pageable);
+        Page<VehicleResponse> allVehicle = vehicleMiddleware.getAllVehicle(pageable);
         return ResponseEntity.ok(allVehicle);
     }
 
     @Override
     public ResponseEntity<VehicleResponse> getVehicleById(String id) {
-        VehicleResponse vehicleResponse = vehicleService.getVehicleResponseById(UUID.fromString(id))
-                .orElseThrow(() -> new VehicleException("vehicle not found"));
-
+        VehicleResponse vehicleResponse = vehicleMiddleware.getVehicleById(id);
         return ResponseEntity.ok(vehicleResponse);
     }
 
     @Override
     public ResponseEntity<Optional<VehicleResponse>> getVehicleByPlate(String plate) {
-        Optional<VehicleResponse> response = vehicleService.getVehicleResponseByPlate(plate);
+        Optional<VehicleResponse> response = vehicleMiddleware.getVehicleByPlate(plate);
         return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<Page<VehicleResponse>> getVehicleByModelAndBrand(String model, String brand, Pageable pageable) {
-        Page<VehicleResponse> response = vehicleService.getVehicleResponseFromModelAndBrand(model,brand, pageable);
+        Page<VehicleResponse> response = vehicleMiddleware.getVehicleByModelAndBrand(model,brand, pageable);
         return ResponseEntity.ok(response);
     }
 }

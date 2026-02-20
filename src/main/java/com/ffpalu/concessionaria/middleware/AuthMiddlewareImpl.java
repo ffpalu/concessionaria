@@ -1,8 +1,8 @@
 package com.ffpalu.concessionaria.middleware;
 
 import com.ffpalu.concessionaria.dto.request.CredentialRequest;
-import com.ffpalu.concessionaria.dto.request.RegistrationRequest;
-import com.ffpalu.concessionaria.dto.request.RegistrationSellerDetailsRequest;
+import com.ffpalu.concessionaria.dto.request.UserDetailsRequest;
+import com.ffpalu.concessionaria.dto.request.SellerDetailsRequest;
 import com.ffpalu.concessionaria.dto.request.RegistrationWrapperRequest;
 import com.ffpalu.concessionaria.dto.response.AuthResponse;
 import com.ffpalu.concessionaria.entity.Credential;
@@ -23,7 +23,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 @RequiredArgsConstructor
@@ -60,10 +59,10 @@ public class AuthMiddlewareImpl  implements AuthMiddleware {
 	@Transactional
 	@Override
 	public void registerUser(RegistrationWrapperRequest request) {
-		RegistrationRequest userDetails = request.getUser();
+		UserDetailsRequest userDetails = request.getUser();
 		CredentialRequest credentialRequest = request.getCredential();
 
-		RegistrationSellerDetailsRequest sellerDetails = request.getDetails();
+		SellerDetailsRequest sellerDetails = request.getDetails();
 
 		if (userService.checkIfUserExists(userDetails.getCF(), userDetails.getEmail())) {
 			throw new UserException("User already exists");

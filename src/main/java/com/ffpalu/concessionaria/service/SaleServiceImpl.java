@@ -1,8 +1,7 @@
 package com.ffpalu.concessionaria.service;
 
-import com.ffpalu.concessionaria.dto.support.SaleDTO;
+import com.ffpalu.concessionaria.dto.support.SaleUnwrappedDTO;
 import com.ffpalu.concessionaria.entity.Sale;
-import com.ffpalu.concessionaria.entity.Seller;
 import com.ffpalu.concessionaria.exceptions.SaleException;
 import com.ffpalu.concessionaria.repository.SaleRepository;
 import com.ffpalu.concessionaria.service.interfaces.SaleService;
@@ -22,7 +21,7 @@ public class SaleServiceImpl implements SaleService {
     private final Mapper mapper;
 
     @Override
-    public Sale createSale(SaleDTO sale) {
+    public Sale createSale(SaleUnwrappedDTO sale) {
         if (saleRepository.existsByVehicleId(sale.getVehicle())) {
             throw new SaleException("Vehicle already sold");
         }
@@ -34,7 +33,7 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public Sale updateSale(SaleDTO saleToUpdate, UUID id) {
+    public Sale updateSale(SaleUnwrappedDTO saleToUpdate, UUID id) {
         Sale sale = saleRepository.findById(id)
                 .orElseThrow(() -> new SaleException("sale not found"));
 

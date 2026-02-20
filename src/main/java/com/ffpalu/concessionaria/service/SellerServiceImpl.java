@@ -1,6 +1,6 @@
 package com.ffpalu.concessionaria.service;
 
-import com.ffpalu.concessionaria.dto.request.RegistrationSellerDetailsRequest;
+import com.ffpalu.concessionaria.dto.request.SellerDetailsRequest;
 import com.ffpalu.concessionaria.entity.Seller;
 import com.ffpalu.concessionaria.entity.User;
 import com.ffpalu.concessionaria.exceptions.SellerException;
@@ -30,7 +30,7 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Seller createSeller(RegistrationSellerDetailsRequest request, User user) {
+    public Seller createSeller(SellerDetailsRequest request, User user) {
         if (checkIfPresent(request.getEmployeeCode())) {
             throw new SellerException("Seller already exists");
         }

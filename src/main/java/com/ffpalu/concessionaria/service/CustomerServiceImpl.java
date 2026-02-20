@@ -1,7 +1,6 @@
 package com.ffpalu.concessionaria.service;
 
-import com.ffpalu.concessionaria.dto.request.RegistrationCustomer;
-import com.ffpalu.concessionaria.dto.response.CustomerResponse;
+import com.ffpalu.concessionaria.dto.request.CustomerRequest;
 import com.ffpalu.concessionaria.entity.Customer;
 import com.ffpalu.concessionaria.exceptions.CustomerException;
 import com.ffpalu.concessionaria.repository.CustomerRepository;
@@ -25,51 +24,48 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
     @Override
-    public CustomerResponse createCustomerResponse(RegistrationCustomer customer) {
-        if(customerRepository.existsByCF(customer.getCF())) {
+    public Customer createCustomer(CustomerRequest customer) {
+        if (customerRepository.existsByCF(customer.getCF())) {
             throw new CustomerException("Customer already present");
         }
 
-        Customer customerCreated = customerRepository.save(mapper.mapToCustomer(customer));
+        Customer updaterCustomer = mapper.mapToCustomer(customer);
 
-        return mapper.mapToCustomerResponse(customerCreated);
+        return customerRepository.save(updaterCustomer);
     }
 
     @Override
-    public CustomerResponse updateCustomerResponse(RegistrationCustomer customer, UUID id) {
+    public Customer updateCustomer(CustomerRequest customer, UUID id) {
         Customer customerToUpdate = customerRepository.findById(id)
                 .orElseThrow(() -> new CustomerException("User not found for updating"));
 
         Customer updatedCustomer = updateCustomerOrDefault(customerToUpdate, customer);
 
-        updatedCustomer = customerRepository.save(updatedCustomer);
-
-        return mapper.mapToCustomerResponse(updatedCustomer);
+        return customerRepository.save(updatedCustomer);
 
     }
 
     @Override
-    public Page<CustomerResponse> getAllCustomer(Pageable pageable) {
-        return customerRepository.findAll(pageable).map(mapper::mapToCustomerResponse);
+    public Page<Customer> getAllCustomer(Pageable pageable) {
+        return customerRepository.findAll(pageable);
     }
 
     @Override
-    public Page<CustomerResponse> getCustomerOrderedByNumSales(Pageable pageable) {
+    public Page<Customer> getCustomerOrderedByNumSales(Pageable pageable) {
 
         Pageable pageable1 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("salesCount").descending());
 
-        return customerRepository.findAll(pageable1).map(mapper::mapToCustomerResponse);
+        return customerRepository.findAll(pageable1);
 
     }
 
     @Override
-    public Optional<CustomerResponse> getCustomerResponseByCF(String CF) {
-        Optional<Customer> findedCustomer = customerRepository.findByCF(CF);
+    public Optional<Customer> getCustomerByCF(String CF) {
 
-        return findedCustomer.map(mapper::mapToCustomerResponse);
+        return customerRepository.findByCF(CF);
     }
 
-    public Customer updateCustomerOrDefault(Customer customer, RegistrationCustomer updaterCustomer) {
+    public Customer updateCustomerOrDefault(Customer customer, CustomerRequest updaterCustomer) {
         return Customer.builder()
                 .id(customer.getId())
                 .email(updaterCustomer.getEmail() == null ? customer.getEmail() : updaterCustomer.getEmail())
@@ -81,8 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Page<CustomerResponse> getCustomerByFirstNameAndLastName(String firstName, String lastName, Pageable pageable) {
-        return customerRepository.findByFirstNameAndLastName(firstName, lastName, pageable)
-                .map(mapper::mapToCustomerResponse);
+    public Page<Customer> getCustomerByFirstNameAndLastName(String firstName, String lastName, Pageable pageable) {
+        return customerRepository.findByFirstNameAndLastName(firstName, lastName, pageable);
     }
 }

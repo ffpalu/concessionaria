@@ -9,13 +9,13 @@ import lombok.Data;
 public class RegistrationWrapperRequest {
 
     @Valid
-    private RegistrationRequest user;
+    private UserDetailsRequest user;
 
     @Valid
     private CredentialRequest credential;
 
     @NotNull(groups = RegistrationValidationGroup.RegistrationSeller.class, message = "Dettagli necessari per la registrazione di un venditore")
     @Valid
-    private RegistrationSellerDetailsRequest details;
+    private SellerDetailsRequest details;
 
 }

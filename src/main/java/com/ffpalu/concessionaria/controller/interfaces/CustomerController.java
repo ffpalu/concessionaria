@@ -1,6 +1,6 @@
 package com.ffpalu.concessionaria.controller.interfaces;
 
-import com.ffpalu.concessionaria.dto.request.RegistrationCustomer;
+import com.ffpalu.concessionaria.dto.request.CustomerRequest;
 import com.ffpalu.concessionaria.dto.response.CustomerResponse;
 import com.ffpalu.concessionaria.dto.validation.CustomerValidation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -19,7 +19,7 @@ public interface CustomerController {
     ResponseEntity<CustomerResponse> createCustomer(
             @RequestBody
             @Validated({CustomerValidation.Creation.class})
-            RegistrationCustomer customer
+            CustomerRequest customer
             );
 
     @GetMapping("/")
@@ -32,7 +32,7 @@ public interface CustomerController {
     ResponseEntity<CustomerResponse> updateCustomer(
             @RequestBody
             @Validated(CustomerValidation.Modify.class)
-            RegistrationCustomer customer,
+            CustomerRequest customer,
 
             @PathVariable
             String ID

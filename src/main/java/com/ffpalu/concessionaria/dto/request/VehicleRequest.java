@@ -1,16 +1,14 @@
 package com.ffpalu.concessionaria.dto.request;
 
 import com.ffpalu.concessionaria.annotation.interfaces.MinYear;
-import com.ffpalu.concessionaria.dto.validation.CustomerValidation;
 import com.ffpalu.concessionaria.dto.validation.VehicleValidation;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.Year;
-import java.util.UUID;
 
 @Data
-public class RegistrationVehicleRequest {
+public class VehicleRequest {
 
     @NotBlank(groups = VehicleValidation.Modify.class)
     private String id;

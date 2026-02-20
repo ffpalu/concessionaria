@@ -1,14 +1,12 @@
 package com.ffpalu.concessionaria.dto.request;
 
-import com.ffpalu.concessionaria.entity.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class RegistrationRequest {
+public class UserDetailsRequest {
 
 	@NotBlank
 	@Size(min = 3 , message = "first name must be at least 3 characters long")

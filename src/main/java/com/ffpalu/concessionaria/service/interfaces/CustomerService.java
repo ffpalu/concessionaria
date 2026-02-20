@@ -1,7 +1,7 @@
 package com.ffpalu.concessionaria.service.interfaces;
 
-import com.ffpalu.concessionaria.dto.request.RegistrationCustomer;
-import com.ffpalu.concessionaria.dto.response.CustomerResponse;
+import com.ffpalu.concessionaria.dto.request.CustomerRequest;
+import com.ffpalu.concessionaria.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,16 +11,16 @@ import java.util.UUID;
 public interface CustomerService {
 
 
-    CustomerResponse createCustomerResponse(RegistrationCustomer customer);
+    Customer createCustomer(CustomerRequest customer);
 
-    CustomerResponse updateCustomerResponse(RegistrationCustomer customer, UUID id);
+    Customer updateCustomer(CustomerRequest customer, UUID id);
 
-    Optional<CustomerResponse> getCustomerResponseByCF(String CF);
+    Optional<Customer> getCustomerByCF(String CF);
 
-    Page<CustomerResponse> getAllCustomer(Pageable pageable);
+    Page<Customer> getAllCustomer(Pageable pageable);
 
-    Page<CustomerResponse> getCustomerOrderedByNumSales(Pageable pageable);
+    Page<Customer> getCustomerOrderedByNumSales(Pageable pageable);
 
-    Page<CustomerResponse> getCustomerByFirstNameAndLastName(String firstName, String lastName, Pageable pageable);
+    Page<Customer> getCustomerByFirstNameAndLastName(String firstName, String lastName, Pageable pageable);
 
 }

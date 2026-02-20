@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 
 @Data
-public class RegistrationSellerDetailsRequest {
+public class SellerDetailsRequest {
 
     @NotBlank
     private String employeeCode;

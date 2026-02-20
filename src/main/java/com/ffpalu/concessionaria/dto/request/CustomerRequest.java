@@ -7,7 +7,7 @@ import lombok.Data;
 
 
 @Data
-public class RegistrationCustomer {
+public class CustomerRequest {
 
     @NotBlank(message = "First name must be present")
     @Size(min = 3, message = "First name must have at least 3 char")
