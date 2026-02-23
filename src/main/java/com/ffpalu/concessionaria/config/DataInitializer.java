@@ -1,10 +1,8 @@
 package com.ffpalu.concessionaria.config;
 
-import com.ffpalu.concessionaria.entity.Credential;
-import com.ffpalu.concessionaria.entity.User;
+import com.ffpalu.concessionaria.entity.*;
 import com.ffpalu.concessionaria.entity.enums.Role;
-import com.ffpalu.concessionaria.repository.CredentialRepository;
-import com.ffpalu.concessionaria.repository.UserRepository;
+import com.ffpalu.concessionaria.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +10,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +24,10 @@ public class DataInitializer implements CommandLineRunner {
     private final CredentialRepository credentialRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SellerRepository sellerRepository;
+    private final CustomerRepository customerRepository;
+    private final VehicleRepository vehicleRepository;
+    private final SaleRepository saleRepository;
 
     @Override
     @Transactional
@@ -84,6 +88,48 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
 
         credentialRepository.saveAll(List.of(credentialAdmin,credentialSupporter, credentialSeller));
+
+        Seller seller1 = Seller.builder()
+                .user(seller)
+                .employeeCode("452s3a")
+                .hireDate(LocalDate.now())
+                .businessPhone("3451196897")
+                .build();
+
+        sellerRepository.save(seller1);
+
+
+        Customer customer = Customer.builder()
+                .firstName("giorgio")
+                .lastName("andrea")
+                .email("andy@email.com")
+                .CF("PLMFCX85SD23A456Z")
+                .build();
+
+        customerRepository.save(customer);
+
+
+        Vehicle mito = Vehicle.builder()
+                .plate("ED570DB")
+                .brand("Alfaromeo")
+                .model("Mito")
+                .used(true)
+                .year(Year.of(2010))
+                .numberOfKilometers(180000)
+                .build();
+
+        vehicleRepository.save(mito);
+
+
+        Sale sale = Sale.builder()
+                .sellDate(LocalDate.now())
+                .price(3750.50)
+                .sellerId(seller1.getId())
+                .customerId(customer.getId())
+                .vehicleId(mito.getId())
+                .build();
+
+        saleRepository.save(sale);
 
     }
 }

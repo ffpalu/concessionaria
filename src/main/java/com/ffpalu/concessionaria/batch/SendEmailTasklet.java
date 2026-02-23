@@ -28,7 +28,7 @@ public class SendEmailTasklet implements Tasklet {
 						.getStepExecution()
 						.getJobExecution()
 						.getExecutionContext()
-						.getString("csvFilePath");
+						.getString("xlsFilePath");
 
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
