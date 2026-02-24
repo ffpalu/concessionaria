@@ -23,4 +23,5 @@ public interface VehicleService {
 
     Vehicle updateVehicle(VehicleRequest vehicleRequest);
 
+
 }

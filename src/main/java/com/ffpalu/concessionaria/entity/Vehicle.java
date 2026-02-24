@@ -36,6 +36,7 @@ public class Vehicle {
 
 	@PastOrPresent(message = "Year min 1950")
 	@MinYear(value = 1950, message = "vehicle too old")
+	@Column(name = "production_year", columnDefinition = "smallint")
 	private Year year;
 
 	@PositiveOrZero(message = "number of kilometer must be at least 0")
