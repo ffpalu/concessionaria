@@ -6,13 +6,17 @@ import com.ffpalu.concessionaria.exceptions.VehicleException;
 import com.ffpalu.concessionaria.repository.VehicleRepository;
 import com.ffpalu.concessionaria.service.VehicleServiceImpl;
 import com.ffpalu.concessionaria.utils.Mapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -103,8 +107,7 @@ class VehicleServiceTest {
         UUID id = UUID.randomUUID();
         request.setId(id.toString());
 
-        when(request.getId()).thenReturn(id.toString());
-        when(vehicleRepository.findById(id)).thenReturn(Optional.empty());
+        when(vehicleRepository.findById(UUID.fromString(request.getId()))).thenReturn(Optional.empty());
         assertThrows(VehicleException.class,() ->  vehicleService.updateVehicle(request));
     }
 
@@ -128,5 +131,56 @@ class VehicleServiceTest {
         assertEquals("AB123CS",  result.getPlate());
 
     }
+
+    @Test
+    void  getVehicleByIdShouldReturnVehicleWhenIdIsFound() {
+        UUID id = UUID.randomUUID();
+        Vehicle vehicle = Vehicle.builder().id(id).plate("AB123CD").build();
+
+
+
+        when(vehicleRepository.findById(id)).thenReturn(Optional.of(vehicle));
+        Vehicle result = vehicleService.getVehicleById(id);
+
+        assertEquals(vehicle, result);
+        assertEquals(id, result.getId());
+    }
+
+    @Test
+    void getVehicleByIdShouldThrowWhenIdIsNotFound() {
+        UUID id = UUID.randomUUID();
+        when(vehicleRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(VehicleException.class,() ->  vehicleService.getVehicleById(id));
+    }
+
+    @Test
+    void getAllVehicleShouldReturnVehiclesWhenIdIsFound() {
+        Pageable pageable =  PageRequest.of(0, 10);
+
+        when(vehicleRepository.findAll(pageable)).thenReturn(Page.empty(pageable));
+
+        Page<Vehicle> result = vehicleService.getAllVehicle(pageable);
+
+        assertEquals(Page.empty(pageable), result);
+    }
+
+    @Test
+    void getVehicleFromModelAndBrandShouldReturnVehicleWhenIdIsFound() {
+        String model = "Mito";
+        String brand = "Alfaromeo";
+
+        Pageable pageable =  PageRequest.of(0, 10);
+        Vehicle vehicle2 = Vehicle.builder().plate("AB123CD").brand(brand).model(model).build();
+        Vehicle vehicle1 = Vehicle.builder().plate("AB125CD").brand(brand).model(model).build();
+
+        Page<Vehicle> page = new PageImpl<>(List.of(vehicle2, vehicle1),pageable,10);
+
+        when(vehicleRepository.findByModelAndBrand(model,brand, pageable)).thenReturn(page);
+
+        Page<Vehicle> result = vehicleService.getVehicleFromModelAndBrand(model, brand, pageable);
+        assertEquals(page, result);
+    }
+
+
 
 }
