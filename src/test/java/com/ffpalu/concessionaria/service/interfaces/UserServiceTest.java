@@ -1,7 +1,6 @@
 package com.ffpalu.concessionaria.service.interfaces;
 
 import com.ffpalu.concessionaria.dto.request.UserDetailsRequest;
-import com.ffpalu.concessionaria.entity.Credential;
 import com.ffpalu.concessionaria.entity.User;
 import com.ffpalu.concessionaria.exceptions.UserException;
 import com.ffpalu.concessionaria.repository.UserRepository;

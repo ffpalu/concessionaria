@@ -2,7 +2,6 @@ package com.ffpalu.concessionaria.service.interfaces;
 
 import com.ffpalu.concessionaria.dto.support.SaleUnwrappedDTO;
 import com.ffpalu.concessionaria.entity.Sale;
-import com.ffpalu.concessionaria.entity.Seller;
 import com.ffpalu.concessionaria.exceptions.SaleException;
 import com.ffpalu.concessionaria.repository.SaleRepository;
 import com.ffpalu.concessionaria.service.SaleServiceImpl;

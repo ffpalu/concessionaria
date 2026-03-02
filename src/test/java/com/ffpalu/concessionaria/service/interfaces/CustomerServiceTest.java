@@ -142,7 +142,7 @@ class CustomerServiceTest {
         Page<Customer> result = customerService.getAllCustomer(pageable);
 
         assertEquals(1, result.getTotalElements());
-        assertEquals("Luigi", result.getContent().get(0).getFirstName());
+        assertEquals("Luigi", result.getContent().getFirst().getFirstName());
     }
 
     @Test
@@ -200,7 +200,7 @@ class CustomerServiceTest {
         Page<Customer> result = customerService.getCustomerByFirstNameAndLastName("Luigi", "Verdi", pageable);
 
         assertEquals(1, result.getTotalElements());
-        assertEquals("Luigi", result.getContent().get(0).getFirstName());
+        assertEquals("Luigi", result.getContent().getFirst().getFirstName());
     }
 
     @Test

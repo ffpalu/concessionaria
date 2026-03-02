@@ -117,6 +117,7 @@ class SellerServiceTest {
 
 
         assertEquals(Optional.of(seller), result);
+        assertTrue(result.isPresent());
         assertEquals(seller, result.get());
         assertEquals(seller.getUser().getCredential().getUsername(), result.get().getUser().getCredential().getUsername());
     }
@@ -131,6 +132,7 @@ class SellerServiceTest {
 
 
         assertEquals(Optional.of(seller), result);
+        assertTrue(result.isPresent());
         assertEquals(seller.getId(), result.get().getId());
     }
 }
